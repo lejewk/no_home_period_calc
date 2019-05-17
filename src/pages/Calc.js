@@ -21,7 +21,9 @@ const styles = theme => ({
     
   },
   textField: {
-
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
   },
   button: {
     marginTop: theme.spacing.unit,
@@ -72,7 +74,7 @@ function calcNoHousePeriod(noticeDate, birthDate, marryDate, noHouseDate) {
     }
   }
 
-  // 무주택기간이 아님. 계산 불가
+  // 무주택기간이 아님.
   if (mStartDate === null) {
     return 0 + '일';
   }
@@ -216,6 +218,7 @@ class Calc extends React.Component {
                     shrink: true,
                   }}
                   margin="normal"
+                  className={classes.textField}
                 />
 
                 <TextField
@@ -228,6 +231,7 @@ class Calc extends React.Component {
                     shrink: true,
                   }}
                   margin="normal"
+                  className={classes.textField}
                 />
 
                 {married &&
@@ -241,6 +245,7 @@ class Calc extends React.Component {
                     shrink: true,
                   }}
                   margin="normal"
+                  className={classes.textField}
                 />
                 }
                 {hasHouse &&
@@ -254,6 +259,7 @@ class Calc extends React.Component {
                     shrink: true,
                   }}
                   margin="normal"
+                  className={classes.textField}
                 />
                 }
               </FormControl>
