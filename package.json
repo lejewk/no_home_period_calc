@@ -2,6 +2,7 @@
   "name": "no_home_period_calc",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://lejewk.github.io/home/",
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "moment": "^2.24.0",
