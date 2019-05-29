@@ -14,7 +14,7 @@ import TextField from '@material-ui/core/TextField';
 import FormLabel from '@material-ui/core/FormLabel';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import moment from "moment";
+import { CalcYearOld, CalcNoHousePeriod } from '../utils/Period';
 
 const styles = theme => ({
   root: {
@@ -37,51 +37,7 @@ const styles = theme => ({
   },
 });
 
-function calcYearOld(birthDate) {
-  return moment().diff(birthDate, 'years', false);
-}
 
-function calcNoHousePeriod(noticeDate, birthDate, marryDate, noHouseDate) {
-  // 현재 만 나이
-  let yearOld = calcYearOld(birthDate);
-
-  let mBirthDate = moment(birthDate);
-  let subtractYear = Math.abs(yearOld - 31);
-
-  // 만 30세가 됬을때의 당해
-  let m30Years = moment();
-  m30Years.subtract(subtractYear, 'years');
-  m30Years.set('month', mBirthDate.month());
-  m30Years.set('date', mBirthDate.date());
-
-  let mNoticeDate = moment(noticeDate);
-  let mMarryDate = marryDate === '' ? null : moment(marryDate);
-  let mNoHouseDate = noHouseDate === '' ? null : moment(noHouseDate);
-
-  let mStartDate = null;
-
-  if (yearOld >= 30) {
-    if (mMarryDate !== null && mNoHouseDate === null) {
-      mStartDate = mMarryDate;
-    } else if (mMarryDate !== null && mNoHouseDate !== null) {
-      mStartDate = mMarryDate.diff(mNoHouseDate, 'days') >= 0 ? mMarryDate : mNoHouseDate;
-    } else if (mMarryDate === null && mNoHouseDate === null) {
-      mStartDate = m30Years;
-    } else if (mMarryDate !== null && mNoHouseDate === null) {
-      mStartDate = mMarryDate.diff(m30Years, 'days') >= 0 ? m30Years : mMarryDate;
-    } else if (mMarryDate === null && mNoHouseDate !== null) {
-      mStartDate = mNoHouseDate.diff(m30Years, 'days') >= 0 ? mNoHouseDate : m30Years;
-    }
-  }
-
-  // 무주택기간이 아님.
-  if (mStartDate === null) {
-    return 0 + '일';
-  }
-
-  let duration = moment.duration(mNoticeDate.diff(mStartDate));
-  return duration.years() + '년 ' + duration.months() + '개월 ' + duration.days() + '일';
-}
 
 class Calc extends React.Component {
   constructor(props) {
@@ -293,7 +249,7 @@ class Calc extends React.Component {
         </Stepper>
         {activeStep === 2 && (
           <Paper square elevation={0} className={classes.resetContainer}>
-            <Typography>현재 만 {calcYearOld(birthDate)} 세 입니다.</Typography>
+            <Typography>현재 만 {CalcYearOld(birthDate)} 세 입니다.</Typography>
             {married && hasHouse &&
               <Typography>결혼을 하였고 주택을 소유한적이 있습니다.</Typography>
             }
@@ -306,7 +262,7 @@ class Calc extends React.Component {
             {married === false && hasHouse === false &&
               <Typography>결혼을 하지 않았고 주택을 소유한적이 없습니다.</Typography>
             }
-            <Typography>따라서 무주택 기간은 {calcNoHousePeriod(noticeDate, birthDate, marryDate, noHouseDate)} 입니다.</Typography>
+            <Typography>따라서 무주택 기간은 {CalcNoHousePeriod(noticeDate, birthDate, marryDate, noHouseDate)} 입니다.</Typography>
             
             <Button
               onClick={this.handleReset} 
