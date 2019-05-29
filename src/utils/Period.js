@@ -7,13 +7,10 @@ function CalcYearOld(birthDate) {
 function CalcNoHousePeriod(noticeDate, birthDate, marryDate, noHouseDate) {
   // 현재 만 나이
   let yearOld = CalcYearOld(birthDate);
-  let mBirthDate = moment(birthDate);
 
   // 만 30세가 됬을때의 당해
   let m30Years = moment(birthDate);
   m30Years.add(30, 'years');
-  m30Years.set('month', mBirthDate.month());
-  m30Years.set('date', mBirthDate.date());
 
   let mNoticeDate = moment(noticeDate);
   let mMarryDate = marryDate === '' ? null : moment(marryDate);
